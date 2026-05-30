@@ -1,0 +1,19 @@
+# Training data
+data-training-ktp/
+data-training-ktp-hasil/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Docker
+*.log
+
+# OS
+.DS_Store

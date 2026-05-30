@@ -1,0 +1,24 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    cpus: "4.0"
+    mem_limit: "8g"
+    shm_size: "2g"
+    environment:
+      KTP_API_KEY: "8ismillaH"
+      KTP_DB_DSN: "host=host.docker.internal port=5432 dbname=ktp user=upi password=12345678"
+      OMP_NUM_THREADS: "4"
+      MKL_NUM_THREADS: "4"
+      OPENBLAS_NUM_THREADS: "4"
+      NUMEXPR_NUM_THREADS: "4"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - easyocr_models:/root/.EasyOCR
+      - ./data-training-ktp:/app/data-training-ktp
+      - ./data-training-ktp-hasil:/app/data-training-ktp-hasil
+
+volumes:
+  easyocr_models:
