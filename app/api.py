@@ -2,7 +2,7 @@ import asyncio
 import secrets
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
@@ -49,11 +49,15 @@ async def root():
 
 
 @app.post("/scan-ktp")
-async def scan_ktp(file: UploadFile = File(...), _: None = Depends(verify_api_key)):
+async def scan_ktp(
+    file: UploadFile = File(...),
+    nik: str | None = Form(None),
+    _: None = Depends(verify_api_key),
+):
     try:
         contents = await file.read()
         try:
-            payload = scan_ktp_bytes(contents)
+            payload = scan_ktp_bytes(contents, expected_nik=nik)
         except ValueError as ve:
             raise HTTPException(status_code=400, detail=str(ve))
         return JSONResponse(content=payload)
